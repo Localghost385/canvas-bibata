@@ -11,24 +11,32 @@
         };
       in
       {
-        # Define the package for the canvas-bibata X cursor theme
         canvas-bibata = pkgs.stdenv.mkDerivation {
           pname = "canvas-bibata-cursors";
           version = "latest";
 
-          # Fetch the theme from the GitHub repository
           src = pkgs.fetchFromGitHub {
             owner = "localghost385";
             repo = "canvas-bibata";
             rev = "main"; # Pin a specific commit or use a tag
-            sha256 = "sha256-Ez8jz/C0xPmffsnH8lZKUz8FFJQBBHYGCBt1AAk+Ug4="; # Replace with the actual hash after fetching
+            sha256 = "sha256-Ez8jz/C0xPmffsnH8lZKUz8FFJQBBHYGCBt1AAk+Ug4="; 
           };
 
-          # Install the theme to the standard X cursor theme directory
           installPhase = ''
-            rm -rf /usr/share/icons/canvas-bibata
-            mkdir -p /usr/share/icons/canvas-bibata
-            cp -r * /usr/share/icons/canvas-bibata
+            mkdir -p $out/share/icons/canvas-bibata
+            cp -r * $out/share/icons/canvas-bibata
+          '';
+
+          # Add a post-install script to copy to user's home directory
+          postInstall = ''
+            if [ -d "$HOME/.local/share/icons" ]; then
+              cp -r $out/share/icons/canvas-bibata "$HOME/.local/share/icons/"
+              echo test
+            else
+              mkdir -p "$HOME/.local/share/icons"
+              cp -r $out/share/icons/canvas-bibata "$HOME/.local/share/icons/"
+              echo testtest
+            fi
           '';
 
           meta = with pkgs.lib; {
