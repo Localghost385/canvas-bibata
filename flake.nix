@@ -17,10 +17,10 @@
           version = "latest";
 
           # Fetch the theme from the GitHub repository
-          src = fetchFromGitHub {
+          src = pkgs.fetchFromGitHub {
             owner = "Silicasandwhich";
             repo = "Bibata_Cursor_Translucent";
-            rev = "v${version}";
+            rev = "v2";
             sha256 = "sha256-RroynJfdFpu+Wl9iw9NrAc9wNZsSxWI+heJXUTwEe7s=";
           };
 
